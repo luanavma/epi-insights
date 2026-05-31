@@ -9,13 +9,16 @@ import dev.langchain4j.agent.tool.Tool;
 import jakarta.annotation.Nonnull;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.persistence.EntityManager;
+import org.iris.service.SqlExecutor;
+import java.util.stream.Collectors;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 @ApplicationScoped
 public class TerminologyTool {
 
     @Inject
-    EntityManager em;
+    SqlExecutor sqlExecutor;
 
     @Nonnull
     @SuppressWarnings("null")
@@ -41,15 +44,22 @@ public class TerminologyTool {
                     TextValue
                 """;
 
-        @SuppressWarnings("unchecked")
-        List<Object[]> rows = em.createNativeQuery(sql).getResultList();
+        List<Map<String,Object>> rows = sqlExecutor.execute(sql);
 
         return rows.stream()
-        .map(row -> new TerminologyResult(
-                row[0] == null ? null : (String) row[0],
-                row[1] == null ? null : row[1].toString(),
-                row[2] == null ? null : row[2].toString()
-        ))
+        .map(row -> {
+            // normalize keys to lowercase for robust access
+            Map<String,Object> norm = row.entrySet().stream()
+                    .collect(Collectors.toMap(e -> e.getKey() == null ? "" : e.getKey().toLowerCase(), Map.Entry::getValue, (a,b)->a, LinkedHashMap::new));
+            Object rt = norm.get("resourcetype");
+            Object coding = norm.get("codingjson");
+            Object text = norm.get("textvalue");
+            return new TerminologyResult(
+                    rt == null ? null : rt.toString(),
+                    coding == null ? null : coding.toString(),
+                    text == null ? null : text.toString()
+            );
+        })
         .toList();
     }
 }

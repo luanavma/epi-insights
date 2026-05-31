@@ -7,7 +7,9 @@ import org.iris.ia.dto.TerminologyResult;
 import org.iris.ia.tools.TerminologyTool;
 
 import jakarta.inject.Inject;
+import jakarta.enterprise.context.ApplicationScoped;
 
+@ApplicationScoped
 public class FlowSqlExecuteAgents {
     
     @Inject

@@ -16,7 +16,7 @@ import java.util.LinkedHashMap;
 import dev.langchain4j.agent.tool.Tool;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.persistence.EntityManager;
+import org.iris.service.SqlExecutor;
 import java.util.Collections;
 import org.jboss.logging.Logger;
 
@@ -29,7 +29,7 @@ public class FhirSqlTool {
     SqlValidator sqlValidator;
 
     @Inject
-    EntityManager em;
+    SqlExecutor sqlExecutor;
 
     @Inject
     FlowSqlExecuteAgents flow;
@@ -64,22 +64,8 @@ public class FhirSqlTool {
         }
 
         try {
-            @SuppressWarnings("unchecked")
-            List<Object[]> raw = (List<Object[]>) em.createNativeQuery(sql).setMaxResults(200).getResultList();
-            LOG.infof("SQL executed, raw result count=%d", raw == null ? 0 : raw.size());
-
-            List<String> colNames = extractSelectColumns(sql);
-            List<Map<String, Object>> rows = new ArrayList<>();
-
-            for (Object[] r : raw) {
-                Map<String, Object> map = new LinkedHashMap<>();
-                for (int i = 0; i < r.length; i++) {
-                    String key = (i < colNames.size()) ? colNames.get(i) : ("c" + (i + 1));
-                    map.put(key, r[i]);
-                }
-                rows.add(map);
-            }
-            LOG.infof("Returning %d rows", rows.size());
+            List<Map<String, Object>> rows = sqlExecutor.execute(sql);
+            LOG.infof("SQL executed, row count=%d", rows == null ? 0 : rows.size());
             return new SqlFhirBuildResult(true, sql, new SqlQueryResponse(rows, null));
         } catch (Exception ex) {
             LOG.errorf(ex, "Execution failed for SQL: %s", ex.getMessage());
