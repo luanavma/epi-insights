@@ -3,6 +3,7 @@ package org.iris.ia.tools;
 
 import org.iris.ia.dto.SqlFhirBuildResult;
 import org.iris.ia.dto.SqlQueryResponse;
+import org.iris.ia.flow.FlowSqlExecuteAgents;
 import org.iris.service.SqlValidator;
 
 import java.util.List;
@@ -29,6 +30,24 @@ public class FhirSqlTool {
 
     @Inject
     EntityManager em;
+
+    @Inject
+    FlowSqlExecuteAgents flow;
+
+    @Tool("""
+    Use this tool to answer questions about FHIR data.
+    This tool use a codify flow to generate SQL and execute :
+        1. First, it generates SQL based on the question and discovered terminology using the FlowSqlExecuteAgents.buildSql method.
+        2. Then, it validates the generated SQL with the provided SqlValidator to ensure it's read-only and only contains SELECT statements.
+        3. If the SQL is valid, it executes the SQL against the FHIR database and returns the results.
+        4. If the SQL is invalid, it returns an error message indicating the reason for invalidation instead of executing.
+    """)
+    public SqlFhirBuildResult queryFhir(String question) {
+
+        String sql = flow.buildSql(question);
+
+        return runSql(sql);
+    }
 
     @Tool("""
         Use this tool to run read-only SQL SELECT queries against the FHIR database.

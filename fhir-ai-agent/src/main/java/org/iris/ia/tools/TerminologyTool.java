@@ -24,7 +24,7 @@ public class TerminologyTool {
         It returns distinct code/text values for Condition and Observation resources.
         Use it before generating disease-specific SQL when the coding representation is unknown.
         """)
-    public List<TerminologyResult> discoverTerminology() {
+    public List<TerminologyResult> discoverTerminology(String question) {
         String sql = """
                 SELECT
                     ResourceType,

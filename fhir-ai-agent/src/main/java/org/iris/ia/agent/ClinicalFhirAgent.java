@@ -7,10 +7,12 @@ import jakarta.enterprise.context.ApplicationScoped;
 
 import org.iris.ia.tools.DateTools;
 import org.iris.ia.tools.FhirSqlTool;
+import org.iris.ia.tools.TerminologyTool;
 
 @ApplicationScoped
 @RegisterAiService(tools = {
         FhirSqlTool.class,
+        TerminologyTool.class,
         DateTools.class
 })
 public interface ClinicalFhirAgent {
@@ -21,8 +23,7 @@ public interface ClinicalFhirAgent {
     Responda em português.
     """)
     @UserMessage("""
-    Pergunta do usuário:
-    {{question}}
+    {{question}}.
     """)
     String ask(String question);
 }
