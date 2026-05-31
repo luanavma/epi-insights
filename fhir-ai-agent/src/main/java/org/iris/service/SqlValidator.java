@@ -28,11 +28,17 @@ public class SqlValidator {
     }
 
     private void validateSafety(String sql) {
-        
+
         log.infof("Validating SQL: %s", sql);
 
         if (sql == null || sql.isBlank()) {
             throw new IllegalArgumentException("SQL is empty");
+        }
+
+        if (sql.matches("(?is).*\\b(patient|subject)\\s*=\\s*\\w+\\._id\\b.*")) {
+            throw new IllegalArgumentException(
+                "Invalid FHIR reference join. Use clinical.patient = 'Patient/' || patient._id"
+            );
         }
 
         String lower = sql.trim().toLowerCase(Locale.ROOT);
