@@ -6,6 +6,7 @@ import io.quarkiverse.langchain4j.RegisterAiService;
 import jakarta.enterprise.context.ApplicationScoped;
 
 import org.iris.ia.dto.AskDashboardResponse;
+import org.iris.ia.tools.AISummaryTool;
 import org.iris.ia.tools.DateTools;
 import org.iris.ia.tools.FhirSqlTool;
 import org.iris.ia.tools.TerminologyTool;
@@ -13,6 +14,7 @@ import org.iris.ia.tools.TerminologyTool;
 @ApplicationScoped
 @RegisterAiService(tools = {
         FhirSqlTool.class,
+        AISummaryTool.class,
         TerminologyTool.class,
         DateTools.class
 })

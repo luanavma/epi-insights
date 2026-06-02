@@ -1,6 +1,7 @@
 package org.iris.ia.flow;
 
 import java.util.List;
+import org.jboss.logging.Logger;
 
 import org.iris.ia.agent.SQLFhirBuilderAgent;
 import org.iris.ia.dto.TerminologyResult;
@@ -13,6 +14,8 @@ import jakarta.enterprise.context.ApplicationScoped;
 @ApplicationScoped
 public class FlowSqlExecuteAgents {
     
+    private static final Logger LOG = Logger.getLogger(FlowSqlExecuteAgents.class);
+
     @Inject
     TerminologyTool terminologyTool;
 
@@ -23,6 +26,7 @@ public class FlowSqlExecuteAgents {
     SqlValidator sqlValidator;
 
     public String buildSql(String question) {
+        LOG.infof("buildSql called with question: %s", question);
         String questionoriginal = question;
         String sql = "";
         Integer tentativeSql = 0;
