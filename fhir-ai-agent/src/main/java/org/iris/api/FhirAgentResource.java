@@ -1,6 +1,7 @@
 package org.iris.api;
 
 import org.iris.ia.agent.ClinicalFhirAgent;
+import org.iris.ia.agent.ImproveAskAgent;
 import org.iris.ia.dto.AskRequest;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
@@ -16,12 +17,16 @@ import jakarta.ws.rs.core.Response;
 public class FhirAgentResource {
 
     @Inject
+    ImproveAskAgent improveAskAgent;
+    
+    @Inject
     ClinicalFhirAgent clinicalFhirAgent;
 
     @POST
     @Path("/ask")
     public Response ask(AskRequest request) {
-        String answer = clinicalFhirAgent.ask(request.question());
+        String improvedQuestion = improveAskAgent.improve(request.question());
+        String answer = clinicalFhirAgent.ask(improvedQuestion);
 
         return Response.ok(answer).build();
     }
