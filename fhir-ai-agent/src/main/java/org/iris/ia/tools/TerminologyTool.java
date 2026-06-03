@@ -10,7 +10,6 @@ import jakarta.annotation.Nonnull;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.iris.service.SqlExecutor;
-import java.util.stream.Collectors;
 import java.util.LinkedHashMap;
 import java.util.Map;
 

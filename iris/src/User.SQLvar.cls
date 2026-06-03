@@ -7,7 +7,6 @@ ClassMethod GetJSON(json As %String, name As %String) As %String(MAXLEN="") [ Sq
     quit:(json="") ""
 
     set dyna = {}.%FromJSON(json)
-
     set result = dyna.%Get(name)
 
     quit $s(result'="":$s(($classname(result)="%Library.DynamicObject")||($classname(result)="%Library.DynamicArray"):result.%ToJSON(),1:{}.%Set(name,result,dyna.%GetTypeOf(name)).%ToJSON()),1:"")
