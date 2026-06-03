@@ -18,6 +18,7 @@
             "Rule": "http://localhost:${port}/csp/user/EnsPortal.RuleEditor.zen?RULE=dc.Demo.FilterPostsRoutingRule"
         }
     },
+    "objectscript.compileFlags": "cuk /multicompile=0",
     "java.configuration.updateBuildConfiguration": "interactive"
 
 }

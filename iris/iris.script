@@ -26,8 +26,8 @@ do strategy.SaveServiceConfigData(config)
 zw ##class(HS.FHIRServer.Tools.DataLoader).SubmitResourceFiles("/opt/irisapp/fhirdata/", "FHIRServer", appKey)
 
 // Import cls
-do $System.OBJ.Import(importdir,"cuk")
+do $System.OBJ.Import("/opt/irisapp/src","cuk /multicompile=0")
 
-//zpm "install fhir-portal"
+do ##class(dc.RegionClinicalVectorGenerator).run()
 
 halt

@@ -32,7 +32,7 @@ ClassMethod GetAtJSON(json As %String, position As %Integer) As %String(MAXLEN="
     set iterator = dyna.%GetIterator()
     
     while iterator.%GetNext(.key, .result) {
-        quit:(i=position) 
+        quit:(i=position)
         do $Increment(i)
     }
 

@@ -1,15 +1,11 @@
-ARG IMAGE=intersystemsdc/irishealth-community:preview
-FROM $IMAGE
+FROM intersystems/irishealth-community:2025.1
 
 USER root
 
-RUN mkdir -p /opt/irisapp \
-    && chown ${ISC_PACKAGE_MGRUSER}:${ISC_PACKAGE_IRISGROUP} /opt/irisapp
-
+RUN mkdir -p /opt/irisapp && chown ${ISC_PACKAGE_MGRUSER}:${ISC_PACKAGE_IRISGROUP} /opt/irisapp
 WORKDIR /opt/irisapp
 
 ENV PIP_TARGET=${ISC_PACKAGE_INSTALLDIR}/mgr/python
-
 
 COPY --chown=${ISC_PACKAGE_MGRUSER}:${ISC_PACKAGE_IRISGROUP} iris.script /
 COPY --chown=${ISC_PACKAGE_MGRUSER}:${ISC_PACKAGE_IRISGROUP} ./src src
