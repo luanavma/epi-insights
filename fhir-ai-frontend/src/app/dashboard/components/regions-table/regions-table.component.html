@@ -14,12 +14,14 @@
           <span class="pulse-dot" aria-hidden="true"></span>
           EPICENTER
         </div>
-        <span class="epicenter-cases">{{ topRegion()!.totalCases }}</span>
       </div>
 
       <div class="epicenter-bottom">
         <span class="epicenter-city">{{ topRegion()!.city }}</span>
+        <div class="cases-block">
+        <span class="epicenter-cases">{{ topRegion()!.totalCases }}</span>
         <span class="epicenter-unit">confirmed cases</span>
+        </div>
       </div>
 
       @if (topRegion()!.mainSymptoms) {
