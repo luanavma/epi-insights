@@ -21,6 +21,7 @@ export class HeatmapComponent implements AfterViewInit {
   private mapEl = viewChild<ElementRef>('mapEl');
   private map!: L.Map;
   private heatLayer: L.Layer | null = null;
+  private markersLayer: L.LayerGroup | null = null;
 
   constructor() {
     effect(() => {
@@ -58,6 +59,10 @@ export class HeatmapComponent implements AfterViewInit {
     if (this.heatLayer) {
       this.map.removeLayer(this.heatLayer);
     }
+    if (this.markersLayer) {
+      this.map.removeLayer(this.markersLayer);
+      this.markersLayer = null;
+    }
     const max = Math.max(...data.map(r =>r.totalCases));
 
     const points = data.map(r => [
@@ -71,5 +76,28 @@ export class HeatmapComponent implements AfterViewInit {
         minOpacity: 0.8
       })
       .addTo(this.map);
+
+    // Add markers with popups for each region
+    this.markersLayer = L.layerGroup();
+    data.forEach(r => {
+      const marker = L.circleMarker([r.latitude, r.longitude], {
+        radius: 8,
+        fillColor: '#ff3333',
+        color: '#ff3333',
+        weight: 1,
+        opacity: 1,
+        fillOpacity: 0.9
+      });
+      const popup = `<strong>${r.city} - ${r.state}</strong><br/>Cases: ${r.totalCases}<br/>Symptoms: ${r.mainSymptoms}`;
+      marker.bindPopup(popup);
+      this.markersLayer!.addLayer(marker);
+    });
+    this.markersLayer.addTo(this.map);
+
+    // Center map on region with most cases
+    const maxRegion = data.reduce((prev, cur) => (cur.totalCases > prev.totalCases ? cur : prev), data[0]);
+    if (maxRegion && maxRegion.latitude != null && maxRegion.longitude != null) {
+      this.map.flyTo([maxRegion.latitude, maxRegion.longitude], 8, { duration: 0.8 });
+    }
   }
 }
