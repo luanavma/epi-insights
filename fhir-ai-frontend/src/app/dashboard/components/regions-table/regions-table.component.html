@@ -51,7 +51,7 @@
       </thead>
 
       <tbody>
-        @for (row of table.data; track row.city) {
+        @for (row of similarRegions(); track row.similarCity) {
           <tr>
             <td>
               <span
@@ -59,9 +59,9 @@
                 [style.background]="similarityColor(row.similarity)"
                 aria-hidden="true">
               </span>
-              {{ row.city }}
+              {{ row.similarCity  }} / {{ row.similarState }}
             </td>
-            <td>{{ row.totalCases }}</td>
+            <td>{{ row.totalOccurrences  }}</td>
             <td>
               @if (row.similarity) {
                 <nz-tag [nzColor]="similarityTagColor(row.similarity)">

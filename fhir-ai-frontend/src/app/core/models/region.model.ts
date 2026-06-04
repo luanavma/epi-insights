@@ -5,5 +5,4 @@ export interface RegionData {
   mainSymptoms: string | null;
   latitude: number;
   longitude: number;
-  similarity?: number;
 }

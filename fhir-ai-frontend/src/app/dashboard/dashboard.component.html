@@ -3,11 +3,14 @@
   <div class="main-row">
     <section class="map-section" aria-label="Geographic Analysis">
       <app-heatmap [regions]="regions()" />
-      <app-regions-table [regions]="regions()" />
+      <app-regions-table [regions]="regions()" [similarRegions]="similarRegions()" />
     </section>
 
     <aside aria-label="Epidemiological assistant">
-      <app-epi-chat (regionsUpdated)="regions.set($event)" (summaryUpdated)="summary.set($event)" />
+      <app-epi-chat 
+      (regionsUpdated)="regions.set($event)" 
+      (summaryUpdated)="summary.set($event)" 
+      (similarRegionsUpdated)="similarRegions.set($event)" />
     </aside>
   </div>
 

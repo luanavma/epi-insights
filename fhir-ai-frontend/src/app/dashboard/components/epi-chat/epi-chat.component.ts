@@ -14,6 +14,8 @@ import { AskResponse, ChatMessage } from '../../../core/models/chat.model';
 import { ChatService } from '../../../core/services/chat.service';
 import { AISummary } from '../../../core/models/ai-summary.model';
 import { RegionData } from '../../../core/models/region.model';
+import { SimilarRegionData } from '../../../core/models/similar-region-data.model';
+import { RegionService } from '../../../core/services/region.service';
 
 @Component({
   selector: 'app-epi-chat',
@@ -29,15 +31,19 @@ import { RegionData } from '../../../core/models/region.model';
 export class EpiChatComponent implements AfterViewChecked {
 
   private readonly chatService = inject(ChatService);
+  private readonly regionService = inject(RegionService);
+  
   private scrollEl = viewChild<ElementRef>('scrollEl');
-
+  
+  similarRegionsUpdated = output<SimilarRegionData[]>();
   regionsUpdated = output<RegionData[]>();
   summaryUpdated = output<AISummary>();
-
+  
   messages = signal<ChatMessage[]>([]);
   loading = signal(false);
-  currentMessage = '';
+
   private shouldScroll = false;
+  currentMessage = '';
   suggestions = [
     'Dengue cases by region this week',
     'Which regions have the most respiratory cases?',
@@ -73,6 +79,14 @@ export class EpiChatComponent implements AfterViewChecked {
         this.emitSummaryUpdate(res.summary!);
         this.loading.set(false);
         this.shouldScroll = true;
+
+        const epicenter = res.regions?.[0];
+        if (epicenter?.city && epicenter?.state) {
+          this.regionService.findSimilarRegions(epicenter.city, epicenter.state).subscribe({
+            next: (similar) => this.similarRegionsUpdated.emit(similar),
+            error: () => { }
+          });
+        }
       },
       error: () => {
         this.appendConnectionErrorMessage();
