@@ -6,6 +6,7 @@ import { AiSummaryComponent } from './components/ai-summary/ai-summary.component
 import { HeatmapComponent } from './components/heatmap/heatmap.component';
 import { RegionsTableComponent } from './components/regions-table/regions-table.component';
 import { EpiChatComponent } from './components/epi-chat/epi-chat.component';
+import { SimilarRegionData } from '../core/models/similar-region-data.model';
 
 @Component({
   selector: 'app-dashboard',
@@ -21,5 +22,6 @@ export class DashboardComponent {
 
   regions = signal<RegionData[]>([]);
   summary = signal<AISummary | null>(null);
+  similarRegions = signal<SimilarRegionData[]>([]);
 
 }
