@@ -1,4 +1,13 @@
+# Exclude everything by default
 *
+
+# Re-include build-essential files and directories
+!/.mvn/
+!mvnw
+!mvnw.cmd
+!pom.xml
+!src/
+
 !target/*-runner
 !target/*-runner.jar
 !target/lib/*

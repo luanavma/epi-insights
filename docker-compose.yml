@@ -1,42 +1,57 @@
-version: "2.2"
 services:
   iris:
     build:
       context: iris
       dockerfile: Dockerfile
-    image: my-fhir-iris:local
+    image: fhir-iris:local
+    container_name: iris
     command: --check-caps false
-    restart: always
-    cpuset: "0-1"
     ports:
       - "52773:52773"
       - "1972:1972"
-#  ollama:
-#    image: ollama/ollama:latest
-#    ports:
-#      - 11434:11434
-#    volumes:
-#      - ollama:/root/.ollama
-#    container_name: ollama
-#    tty: true
-#    restart: unless-stopped
-#
-#  open-webui:
-#    image: ghcr.io/open-webui/open-webui:main
-#    container_name: open-webui
-#    volumes:
-#      - open-webui:/app/backend/data
-#    depends_on:
-#      - ollama
-#    ports:
-#      - 3000:8080
-#    environment:
-#      - 'OLLAMA_BASE_URL=http://ollama:11434'
-#      - 'WEBUI_SECRET_KEY='
-#    extra_hosts:
-#      - host.docker.internal:host-gateway
-#    restart: unless-stopped
-#
-#volumes:
-#  ollama: {}
-#  open-webui: {}
+    networks:
+      - iris-net
+    healthcheck:
+      test: ["CMD", "iris", "list"]
+      interval: 20s
+      timeout: 10s
+      retries: 10
+
+  fhir-ai-agent:
+    build:
+      context: fhir-ai-agent
+      dockerfile: Dockerfile
+    image: fhir-ai-agent:latest
+    container_name: fhir-ai-agent
+    depends_on:
+      iris:
+        condition: service_healthy
+    environment:
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      QUARKUS_PROFILE: dev
+      QUARKUS_DATASOURCE_JDBC_URL: jdbc:IRIS://iris:1972/FHIRSERVER
+      QUARKUS_DATASOURCE_USERNAME: _SYSTEM
+      QUARKUS_DATASOURCE_PASSWORD: SYS
+    ports:
+      - "8080:8080"
+    networks:
+      - iris-net
+    restart: unless-stopped
+
+  fhir-ai-frontend:
+    build:
+      context: fhir-ai-frontend
+      dockerfile: Dockerfile
+    image: fhir-ai-frontend:latest
+    container_name: fhir-ai-frontend
+    ports:
+      - "4200:80"
+    depends_on:
+      - fhir-ai-agent
+    networks:
+      - iris-net
+    restart: unless-stopped
+
+networks:
+  iris-net:
+    driver: bridge
