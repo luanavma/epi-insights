@@ -45,9 +45,9 @@ export class EpiChatComponent implements AfterViewChecked {
   private shouldScroll = false;
   currentMessage = '';
   suggestions = [
-    'Dengue cases by region this week',
-    'Which regions have the most respiratory cases?',
-    'Show gastrointestinal outbreak patterns',
+    'Show scorpion sting cases by state in the last 30 days',
+    'Which regions reported the highest dengue incidence this month?',
+    'Are there any active COVID-19 clusters right now?',
   ];
 
   ngAfterViewChecked() {

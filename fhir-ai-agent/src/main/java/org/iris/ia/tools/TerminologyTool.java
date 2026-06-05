@@ -2,9 +2,7 @@ package org.iris.ia.tools;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
 import org.iris.ia.dto.TerminologyResult;
-
 import dev.langchain4j.agent.tool.Tool;
 import jakarta.annotation.Nonnull;
 import jakarta.enterprise.context.ApplicationScoped;

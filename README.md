@@ -11,9 +11,9 @@ Instead of manually querying databases or navigating complex healthcare records,
 
 Ask questions such as:
 
-- "Show respiratory disease trends in the last 12 weeks."
+- "Show scorpion sting cases by state in the last 30 days"
 - "Which regions reported the highest dengue incidence this month?"
-- "Tell me about COVID-19 cases in Brazil"
+- "Are there any active COVID-19 clusters right now?"
 
 The AI agent translates questions into validated queries and retrieves data directly from FHIR resources.
 
@@ -21,7 +21,6 @@ The AI agent translates questions into validated queries and retrieves data dire
 - 🗺️ **Geospatial Heatmaps** — Leaflet-based visualization of disease distribution across regions
 - 🔍 **Hybrid Search** — Combines FHIR SQL execution with semantic vector search for richer answers
 - 🤖 **AI Agent (LangChain4j)** — Intelligent agent that decides when to query FHIR SQL vs. vector store
-- 📊 **RAG Pipeline** — Retrieval-Augmented Generation over vectorized FHIR resources
 - 🏥 **FHIR R4 Compliant** — Built on top of InterSystems IRIS for Health FHIR repository
 
 
@@ -40,7 +39,7 @@ This approach follows the same principle used by modern healthcare AI systems th
 ## 🚀 Getting Started
 EpInsights is fully containerized and can be started locally using Docker Compose.
 
-### Prerequisites ✅
+### ✅ Prerequisites 
 
   - Make sure you have the following installed:
     - 🔗 git  
@@ -68,7 +67,7 @@ cd epi-insights
  - Inside your new .env file, insert your `OPENAI_API_KEY`
 
     ```bash
-  OPENAI_API_KEY=your_openai_api_key_here
+    OPENAI_API_KEY=your_openai_api_key_here
     ```
 
 ### ⚡ Start the Application
@@ -88,7 +87,7 @@ The first startup may take several minutes while Docker downloads the required i
   - 🗄️ Start the Angular frontend (conversational UI)
 
 
-### Accessing the Services 🌐
+### 🌐 Accessing the Services 
 
 - Once the stack is running:
   - 🤖 **Frontend (Conversational UI):** <http://localhost:4200>
@@ -97,6 +96,18 @@ The first startup may take several minutes while Docker downloads the required i
 
 
 ## Architecture
+
+![EpInsights Diagram](/docs/images/epinsights-diagram.png)
+
+
+1. Synthetic FHIR Data Layer
+Patient bundles with ICD-10 and SNOMED CT coded conditions, symptom observations, and geolocated encounters are loaded into the InterSystems IRIS for Health FHIR repository, providing the clinical foundation for all analysis.
+2. Regional Clinical Vectorization [Embedded Python + Vector Search]
+Embedded Python runs natively inside IRIS to aggregate clinical features per region over a rolling 30-day window. Features are hashed into a 384-dimensional vector, normalized, and stored using IRIS Vector Search capabilities. This enables VECTOR_COSINE similarity queries that identify cities with epidemiologically similar profiles.
+3. Disciplined AI Agent with Tool Calling [LangChain4j + Quarkus]
+The conversational agent never guesses. Every question passes through a terminology discovery step that reads real codes from the FHIR repository before SQL is generated. The SQL builder follows strict FHIR-aware rules. The validator compiles every query against the live IRIS instance before execution. All answers come from real data.
+4. Conversational Epidemiological Interface [Angular]
+A live dashboard that responds to natural language questions. Each answer updates the heatmap, the epicenter panel, and the similar regions table — the last powered by Vector Search — in a single conversational turn.
 
 ## Authors
 

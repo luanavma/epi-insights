@@ -5,14 +5,11 @@ import org.iris.ia.dto.SqlFhirBuildResult;
 import org.iris.ia.dto.SqlQueryResponse;
 import org.iris.ia.flow.FlowSqlExecuteAgents;
 import org.iris.service.SqlValidator;
-
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
-
 import dev.langchain4j.agent.tool.Tool;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;

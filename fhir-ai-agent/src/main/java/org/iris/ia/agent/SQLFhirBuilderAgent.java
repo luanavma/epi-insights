@@ -1,11 +1,8 @@
 package org.iris.ia.agent;
 
 import io.quarkiverse.langchain4j.RegisterAiService;
-
 import java.util.List;
-
 import org.iris.ia.dto.TerminologyResult;
-
 import dev.langchain4j.service.SystemMessage;
 import dev.langchain4j.service.UserMessage;
 import jakarta.enterprise.context.ApplicationScoped;
