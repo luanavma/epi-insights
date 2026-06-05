@@ -29,42 +29,44 @@ The AI agent translates questions into validated queries and retrieves data dire
 
 For safety and auditability:
 
-The AI agent never executes arbitrary SQL.
-All database access is mediated through predefined tools.
-Queries are validated before execution.
-Results are generated exclusively from real healthcare data.
+- The AI agent never executes arbitrary SQL.
+- All database access is mediated through predefined tools.
+- Queries are validated before execution.
+- Results are generated exclusively from real healthcare data.
 
 This approach follows the same principle used by modern healthcare AI systems that rely on controlled FHIR access instead of unrestricted database interaction.
 
 
 ## 🚀 Getting Started
+EpInsights is fully containerized and can be started locally using Docker Compose.
 
-### Prerequisites
+### Prerequisites ✅
 
-Make sure you have installed:
-- Git
-- Docker
-- Docker Compose
-- OpenAI API Key
+  - Make sure you have the following installed:
+    - 🔗 git  
+    - 🐳 Docker  
+    - 🧩 Docker Compose  
+    - 🔑 An OpenAI API key
 
-📂 Clone Repository
+### 📂 Clone the Repository
+
 ```bash
 git clone https://github.com/luanavma/epi-insights.git
 ```
 
 ```bash
-cd fhir-ai
+cd epi-insights
 ```
 
-⚙️ Configure Environment Variables
+### ⚙️ Configure Environment Variables 
 
-- Before starting the stack, create your .env to define the `OPENAI_API_KEY` environment variable on your machine.
+ - Before starting the stack, create your .env to define the `OPENAI_API_KEY` environment variable on your machine. Inside your epi-insights directory, run:
 
     ```bash
    cp .env.example .env
     ```
-- Inside your new .env file, insert your `OPENAI_API_KEY`
-- 
+ - Inside your new .env file, insert your `OPENAI_API_KEY`
+
     ```bash
   OPENAI_API_KEY=your_openai_api_key_here
     ```
