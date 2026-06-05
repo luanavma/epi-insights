@@ -58,12 +58,15 @@ cd fhir-ai
 
 ⚙️ Configure Environment Variables
 
-- Before starting the stack, define the `OPENAI_API_KEY` environment variable on your machine.
-
-    **Linux / macOS**
+- Before starting the stack, create your .env to define the `OPENAI_API_KEY` environment variable on your machine.
 
     ```bash
-    export OPENAI_API_KEY=your_openai_api_key_here
+   cp .env.example .env
+    ```
+- Inside your new .env file, insert your `OPENAI_API_KEY`
+- 
+    ```bash
+  OPENAI_API_KEY=your_openai_api_key_here
     ```
 
 ### ⚡ Start the Application
