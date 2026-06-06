@@ -17,11 +17,11 @@ Ask questions such as:
 
 The AI agent translates questions into validated queries and retrieves data directly from FHIR resources.
 
-- 💬 **Conversational Interface** — Ask epidemiological questions in natural language, maintaining session context via `chatId`
-- 🗺️ **Geospatial Heatmaps** — Leaflet-based visualization of disease distribution across regions
+- 💬 **Conversational Interface** —et-based visualization of disease distribution across regions
 - 🔍 **Hybrid Search** — Combines FHIR SQL execution with semantic vector search for richer answers
 - 🤖 **AI Agent (LangChain4j)** — Intelligent agent that decides when to query FHIR SQL vs. vector store
-- 🏥 **FHIR R4 Compliant** — Built on top of InterSystems IRIS for Health FHIR repository
+- 🏥 **FHIR R4 Compliant** —  Ask epidemiological questions in natural language, maintaining session context via `chatId`
+- 🗺️ **Geospatial Heatmaps** — LeaflBuilt on top of InterSystems IRIS for Health FHIR repository
 
 
 🔒 Controlled Data Access
@@ -53,13 +53,45 @@ EpInsights is fully containerized and can be started locally using Docker Compos
 git clone https://github.com/luanavma/epi-insights.git
 ```
 
+### 🧬 Generate Synthetic FHIR Data
+
+Before starting the application, generate the synthetic FHIR dataset used by EpInsights.
+
 ```bash
-cd epi-insights
+cd epi-insights/iris
 ```
+
+
+* Create a Python virtual environment:
+
+```bash
+python3 -m venv venv
+```
+
+* Activate the virtual environment:
+
+```bash
+source venv/bin/activate
+```
+
+* Install the required dependency:
+
+```bash
+pip install faker
+```
+
+* Generate the synthetic dataset:
+
+```bash
+python seed.py --patients 500 --output ./iris/data --days 45 --seed 42
+```
+
+This command creates a synthetic epidemiological FHIR dataset that will be automatically loaded into InterSystems IRIS during the container build process.
+
 
 ### ⚙️ Configure Environment Variables 
 
- - Before starting the stack, create your .env to define the `OPENAI_API_KEY` environment variable on your machine. Inside your epi-insights directory, run:
+ - Before starting the stack, from the project root directory, create your .env to define the `OPENAI_API_KEY` environment variable on your machine. Inside your epi-insights directory, run:
 
     ```bash
    cp .env.example .env
