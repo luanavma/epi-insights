@@ -1,4 +1,4 @@
-FROM intersystems/irishealth-community:2025.1
+FROM intersystems/irishealth-community:2025.3
 
 USER root
 
