@@ -33,8 +33,6 @@ The AI agent translates questions into validated queries and retrieves data dire
 🔒 Controlled Data Access
 
 For safety and auditability:
-
-- The AI agent never executes arbitrary SQL.
 - All database access is mediated through predefined tools.
 - Queries are validated before execution.
 - Results are generated exclusively from real healthcare data.
